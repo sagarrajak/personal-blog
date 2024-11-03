@@ -6,6 +6,7 @@ import { buttonVariants } from './ui/button'
 import { Icons } from './icon'
 import MainNav from './main-nav'
 import MobileNav from './mobile-nav'
+import ModeToggle from './mode-toggle'
 
 function SiteHeader() {
   return (
@@ -34,6 +35,7 @@ function SiteHeader() {
             </Link>
           </nav>
         </div>
+				<ModeToggle/>
         <MobileNav/>
       </div>
     </div>
