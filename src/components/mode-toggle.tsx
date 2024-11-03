@@ -3,8 +3,8 @@
 
 import {
 	DropdownMenu,
+	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
-	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
@@ -13,7 +13,7 @@ import { Button } from './ui/button'
 import { useTheme } from "next-themes"
 
 function ModeToggle() {
-	const { setTheme } = useTheme()
+	const { setTheme, theme} = useTheme()
 
 	return (
 		<DropdownMenu>
@@ -24,18 +24,19 @@ function ModeToggle() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align='center' className="w-auto">
-				{/* <DropdownMenuLabel>Appearance</DropdownMenuLabel> */}
 				<DropdownMenuSeparator />
-				<DropdownMenuItem
-					onClick={() => setTheme('dark')}
+				<DropdownMenuCheckboxItem
+					onCheckedChange={() => setTheme('dark')}
+					checked={theme === 'dark'}
 				>
 					Dark
-				</DropdownMenuItem>
-				<DropdownMenuItem
-					onClick={() => setTheme('light')}
+				</DropdownMenuCheckboxItem>
+				<DropdownMenuCheckboxItem
+					onCheckedChange={() => setTheme('light')}
+					checked={theme === 'light'}
 				>
 					Light
-				</DropdownMenuItem>
+				</DropdownMenuCheckboxItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	)

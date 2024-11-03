@@ -11,7 +11,7 @@ import ModeToggle from './mode-toggle'
 function SiteHeader() {
   return (
     <div className='sticky top-0 w-full border-b  border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background:60'>
-      <div className='container flex h-14 max-w-screen-xl items-center'>
+      <div className='flex h-14 items-center w-full'>
         <MainNav />
         <div className='flex flex-1 items-center justify-end space-x-2'>
           <nav className='flex items-center'>
