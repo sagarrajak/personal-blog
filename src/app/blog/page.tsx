@@ -1,19 +1,17 @@
-import { posts } from "#site/content";
 import { PostItem } from "@/components/post-item";
+import { getAllPosts } from "@/lib/mdx";
 import { sortBlogPost } from "@/lib/utils";
 
 export default async function BlogPage() {
 
-	const postedPostes = sortBlogPost(
-		(posts || []).filter((post) => post.published)
-	);
+	const postedPostes = await getAllPosts();
 
 	const renderPosts = () => {
 		return postedPostes?.length > 0 ? (
 			<ul className="flex flex-col">
-				{postedPostes.map((item) => (
-					<li key={item.slug}>
-						<PostItem {...item} />
+				{postedPostes.map(({frontmatter}) => (
+					<li key={frontmatter.slug}>
+						<PostItem {...frontmatter} />
 					</li>
 				))}
 			</ul>

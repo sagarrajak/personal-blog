@@ -22,3 +22,5 @@ export function sortBlogPost(posts: Post[]) {
 		return lhsDate < rhsDate ? 1 : lhsDate > rhsDate ? -1 : 0;
 	});
 }
+
+export type MergeType<T> = {[K in keyof T]: T[K]}
