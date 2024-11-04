@@ -8,6 +8,7 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
 import { MergeType } from "./utils";
+import { Callout } from "@/components/callout";
 
 export const PostSchema = z.object({
 	title: z.string(),
@@ -19,9 +20,11 @@ export const PostSchema = z.object({
 	content: z.string(),
 });
 
-export type Post = MergeType<Omit<z.infer<typeof PostSchema>, 'content'> & {
-	content: React.ReactElement
-}>
+export type Post = MergeType<
+	Omit<z.infer<typeof PostSchema>, "content"> & {
+		content: React.ReactElement;
+	}
+>;
 
 // src/lib/mdx.ts
 
@@ -29,11 +32,6 @@ const POSTS_PATH = path.join(process.cwd(), "content/blog");
 
 const prettyCodeOptions: Options = {
 	theme: "github-dark",
-	onVisitLine(node: LineElement) {
-		if (node.children.length === 0) {
-			node.children = [{ type: "text", value: " " }];
-		}
-	},
 };
 
 export async function getPostBySlug(slug: string) {
@@ -50,13 +48,23 @@ export async function getPostBySlug(slug: string) {
 				],
 				rehypePlugins: [
 					rehypeSlug, // Add IDs to headings
-					[rehypeAutolinkHeadings, { behavior: "append" }], // Add anchor links to headings
+					[
+						rehypeAutolinkHeadings,
+						{
+							behavior: "wrap",
+							properties: {
+								className: ["subheading-anchor"],
+								ariaLabel: "Link to section",
+							},
+						},
+					], // Add anchor links to headings
 					[rehypePrettyCode, prettyCodeOptions], // Syntax highlighting
 				],
 			},
 		},
 		components: {
 			Image,
+			Callout,
 		},
 	});
 
@@ -73,9 +81,9 @@ export async function getAllPosts() {
 			.filter((file) => file.endsWith(".mdx"))
 			.map(async (file) => {
 				const slug = file.replace(/\.mdx$/, "");
-				const {content, frontmatter } = await getPostBySlug(slug);
+				const { content, frontmatter } = await getPostBySlug(slug);
 				frontmatter.slug = slug;
-				return {content, frontmatter}
+				return { content, frontmatter };
 			})
 	);
 

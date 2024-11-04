@@ -4,7 +4,316 @@ description: This is first blog
 date: 2024-03-06
 published: true
 ---
+## Introduction
 
-#Hello Word
+Let's dive into the world of TypeScript generics and how we can use them to handle the complexities of dynamic data types in both frontend and backend development. Generics are type parameters we pass into functions when we don't know the exact type of data the function will accept or return. We will explore various use cases of generics in React and NodeJS, with practical examples that show how to use this awesome tool to create more reusable components and great abstractions.
 
-Welcome to my blog
+## What is typescript generics, why you should know generics ?
+
+Are you currently frustrated with using `any` or `unknown` in your codebase when you don't know exactly what kind of data your component will consume?
+
+## Basic examples
+
+Let's assume you have a function that calls an endpoint and returns data from the backend:
+
+<Callout type='warning'>This is callout</Callout>
+
+```ts fetchdata.ts
+import axios, { AxiosResponse } from 'axios';
+
+interface ApiResponse {
+  status: string;
+  data: any;
+}
+
+const fetchData = async (url: string, config?: object): Promise<ApiResponse> => {
+  try {
+    const response: AxiosResponse = await axios.get(url, config);
+    return {
+      status: 'success',
+      data: response.data,
+    };
+  } catch (error) {
+    return {
+      status: 'error',
+      data: error.response ? error.response.data : 'Something went wrong',
+    };
+  }
+};
+```
+
+## Taking generic arguments
+
+In TypeScript, functions can take generic arguments as parameters. For example:
+
+### in case of arrow function
+
+```ts arrow.ts
+
+const func = <T>(firstArg: T) => {
+  return first_arg;
+};
+
+```
+
+In this simple example, we define an arrow function with a generic parameter T. We define the generic parameter inside `<>`, and we can name it like a normal variable. Typically, we use a capital letter or word for the name.
+
+```ts arrow.ts
+
+type Empoyee = {
+  firstName: string;
+  lastName: string
+}
+
+const empl: Empoyee = {
+  firstName: 'sagar',
+  lastName: 'rajak'
+}
+
+const newEmployee = fun<Empoyee>(empl);
+
+```
+
+We can also define multiple generic arguments in a function:
+
+```ts multiple.ts
+function utilyFunction<T, R>(firstValue: T, secondValue: R) {}
+
+```
+
+Here we are taking two generic arguments with types `T` and `R`.
+
+### A Real-World Example: JSON Parser Function
+
+Let's look at an example of a JSON parser function where we don't know the exact type of data after parsing:
+
+```ts jsonParser.ts
+function parseJson<T>(str: string): T | undefined {
+  try {
+    return JSON.parse(str);
+  } catch (err) {
+    console.error("Unable to parse string");
+    return undefined;
+  }
+}
+
+type Employee = {
+  first_name: string,
+  is_active: boolean
+};
+
+const obj: Employee = {
+  first_name: 'first',
+  is_active: true
+}
+
+const stringifyJson = parseJson<Employee>(JSON.stringify(obj));
+
+```
+
+here if you can see type of employee
+
+<figure>
+  {' '}
+  <img
+    src="/static/images/generics/tyepdefination.png"
+    alt="Type of parsed json"
+    width="500"
+    height="300"
+  />
+  <figcaption> Caption for your image.</figcaption>
+</figure>
+
+### Lets take a example of generic in typescript class
+
+We have used many repository classes in ORMs, so let's take an example of a generic ORM interface. (Don't get confused with the `Generic interface`; I'll explain this.)
+
+```ts respository.ts
+interface Employee {
+  firstName: string;
+  lastName: string;
+  id: string;
+  email: string;
+}
+
+interface Repository<T> {
+  findAll(): T[];
+  findById(id: string): T | undefined;
+  create(entity: T, id: string): T;
+  delete(id: string): boolean;
+}
+
+class BaseReposiotry<EntityDef> implements Reposiotry<EntityDef> {
+  delete(id: string): boolean {
+    throw new Error("Method not implemented.");
+  }
+
+  private store = new Map<string, EntityDef>();
+
+  findAll(): EntityDef[] {
+    return [...this.store.values()];
+  }
+
+  findById(id: string): EntityDef | undefined {
+    throw this.store.get(id);
+  }
+
+  create(entity: EntityDef, id: string): EntityDef {
+    this.store.set(id, entity);
+    return entity;
+  }
+}
+
+const employeeReposiotry = new BaseReposiotry<Employee>()
+```
+
+In this example, we created a simple TypeScript generic interface for repository methods and passed `T` as a generic argument. In the second class, we defined a `BaseRepository` class where we implemented all the repository methods, taking `EntityDef` as a generic argument and passing it as a parameter in the interface definition `(Repository<EntityDef>)`. When you create an employee object, TypeScript will give you all the autocompletions for the Employee interface.
+
+<figure>
+  <img src="/static/images/create_employee.gif" alt="gif" width="300" />
+  <figcaption>Here you can see the autocomplete.</figcaption>
+</figure>
+
+## What is 'extends' Keyword
+
+let dig deep more, suppose we want that every entity should have an `id` property and it's type must be `string`
+
+let modify create method
+
+```ts respository.ts
+interface Reposiotry<T> {
+  findAll(): T[];
+  findById(id: string): T | undefined;
+  create(entity: T): T;
+  delete(id: string): boolean;
+}
+```
+
+let modify our base repository class so that every entity object have `id` property
+
+```ts respository.ts
+class BaseReposiotry<EntityDef extends {id: string}> implements Reposiotry<EntityDef> {
+  delete(id: string): boolean {
+    if(this.store.has(id)) {
+      this.store.delete(id);
+      return true;
+    }
+    return false;
+  }
+
+  private store = new Map<string, EntityDef>();
+
+  findAll(): EntityDef[] {
+    return [...this.store.values()];
+  }
+
+  findById(id: string): EntityDef | undefined {
+    throw this.store.get(id);
+  }
+
+  create(entity: EntityDef): EntityDef {
+    this.store.set(entity.id, entity);
+    return entity;
+  }
+}
+
+```
+
+### Another Example: Restricting Arguments to Objects
+
+let take another example we want a argument of type `object` not primitive (number, string, boolean etc)
+
+```ts:extreactKeyOf.ts
+function extreactKeyOf<T extends object>(value: T) {}
+```
+
+if we pass number, boolean or string, typescript will throw error
+
+<figure>
+  <img src="/static/images/extendkeyword-object.png" width="300" />
+  <figcaption>Here you can see error for `string` and `boolean`</figcaption>
+</figure>
+
+### Example: Props in a React Component
+
+Let's look at an example where the props passed to a React component must be an array, and each element in the array must have `key`, `value`, and `label` properties.
+
+```ts GenericComponent.tsx
+import React from 'react';
+
+interface Item {
+  key: string;
+  value: string;
+  label: string;
+}
+
+interface Props<T extends Item> {
+  data: T[];
+}
+
+const GenericComponent = <T extends Item>({ data }: Props<T>) => {
+  return (
+    <div>
+      {data.map((item) => (
+        <div key={item.key}>
+          <pre>{JSON.stringify(item, null, 2)}</pre>
+          <div>
+            <h3>{item.value}</h3>
+            <p>{item.label}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default GenericComponent;
+```
+
+Here, you will get full autocompletion for the array elements because VS Code knows that each element must have `key`, `value`, and `label` properties.
+
+<figure>
+  <img src="/static/images/keyoff-array.png" width="300" />
+  <figcaption>Example of `extends` with an array</figcaption>
+</figure>
+
+Lets take another example were, parameter we are passing must have length property
+
+```ts arrayFunction.ts
+function arrayFunction<T extends {length: number}>(arr: T) {}
+
+arrayFunction([1, 2, 3])
+arrayFunction(["sagar", 1])
+arrayFunction("1123")
+
+```
+
+As you can see, VS Code will allow all arguments with a length property.
+
+### Example: Type constraint with generic type only allow `true` as value
+
+```ts onlyAcceptTrue.ts
+function onlyAcceptTrue<T extends true>(value: T) {}
+```
+
+<figure>
+  <img src="/static/images/onlyAcceptTrue.png" width="300" />
+  <figcaption>only allow `true` as value</figcaption>
+</figure>
+
+## What is 'Keyof' Keyword
+
+The keyof keyword in TypeScript, when used with generics, is a powerful utility that allows you to create types based on the keys of an object. It is used to get the property names (keys) of a given object type.
+This can be particularly useful when you want to limit the values of a variable to the keys of an object or when you want to extract types dynamically based on the shape of other types.
+
+### Example: A form when you want to set the value of the key according to the passed type
+
+## What is 'infer' Keyword
+
+## Default type parameters
+
+## Real word Example's
+
+### A Autocomplete that will extreact data from any endpoint's and show as list
+
+### Generic redux getter and setter

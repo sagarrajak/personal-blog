@@ -3,6 +3,8 @@ import { getAllPosts, getPostBySlug } from '@/lib/mdx'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
+import "../../../../styles/mdx.css"
+
 interface PostPageParams {
 	params: {
 		slugs: string[]
@@ -25,7 +27,7 @@ export default async function PostPage({ params }: PostPageParams) {
 		notFound()
 
 	return (
-		<article className='container py-6 prose max-w-3xl mx-auto'>
+		<article className='container py-6 prose lg:prose-xl max-w-3xl mx-auto'>
 			<h1 className='mb-2 font-bold text-2xl'>{post.frontmatter.title}</h1>
 			{post.frontmatter.description ? <p className='text-xl mt-0 text-muted-foreground'>{post.frontmatter.description}</p> : null}
 			<hr className='my-4' />
