@@ -9,6 +9,7 @@ import remarkGfm from "remark-gfm";
 import Image from "next/image";
 import { MergeType } from "./utils";
 import { Callout } from "@/components/callout";
+import remarkToc from "remark-toc"
 
 export const PostSchema = z.object({
 	title: z.string(),
@@ -38,13 +39,14 @@ export async function getPostBySlug(slug: string) {
 	const filePath = path.join(POSTS_PATH, `${slug}.mdx`);
 	const fileContent = fs.readFileSync(filePath, "utf8");
 
-	const { content: compiledContent, frontmatter } = await compileMDX<Post>({
+	const { content: compiledContent, frontmatter} = await compileMDX<Post>({
 		source: fileContent,
 		options: {
 			parseFrontmatter: true,
 			mdxOptions: {
 				remarkPlugins: [
-					remarkGfm, // GitHub Flavored Markdown
+					remarkGfm,
+					remarkToc // GitHub Flavored Markdow
 				],
 				rehypePlugins: [
 					rehypeSlug, // Add IDs to headings
