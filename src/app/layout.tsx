@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import SiteHeader from '@/components/site-header'
 import { Providers } from "@/components/provider";
 import { siteConfig } from "../../config/site";
+import Footer from "@/components/footer";
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -38,6 +39,7 @@ export default function RootLayout({
 					<div className="flex flex-col min-h-dvh bg-background">
 						<SiteHeader />
 						<main className="flex-1 font-sans">{children}</main>
+						<Footer/>
 					</div>
 				</Providers>
 
