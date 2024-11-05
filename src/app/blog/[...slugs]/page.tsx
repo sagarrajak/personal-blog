@@ -61,8 +61,13 @@ export async function generateMetadata({params}: PostPageParams): Promise<Metada
 
 
 export async function generateStaticParams(): Promise<PostPageParams['params'][]> {
+	try {
 	const postedPostes = await getAllPosts();
-	return postedPostes.map((post) => ({ slugs: ['blog', post.frontmatter.slug] }))
+	return postedPostes.map((post) => ({ slugs: [post.frontmatter.slug] }))
+	} catch(Err) {
+		console.error(Err);
+	}
+	return [];
 }
 
 export default async function PostPage({ params }: PostPageParams) {

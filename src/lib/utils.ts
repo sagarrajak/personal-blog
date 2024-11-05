@@ -1,6 +1,7 @@
-import { Post } from "#site/content";
+
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Post } from "./mdx";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
