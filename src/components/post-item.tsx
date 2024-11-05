@@ -1,8 +1,8 @@
-import { Post } from "#site/content";
 import { Calendar } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { cn, formatDate } from "@/lib/utils";
+import { Post } from "@/lib/mdx";
 
 export type PostItemProps = Post
 
@@ -25,7 +25,7 @@ export function PostItem({ slug, title, description, date }: PostItemProps) {
 				</dd>
 			</dl>
 			<Link href={['blog', slug].join("/")} className={cn(buttonVariants({ variant: 'link' }), 'py-0')}>
-				Read More
+				Read More ➔
 			</Link>
 		</div>
 	</article>
