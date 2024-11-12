@@ -96,3 +96,49 @@ export async function getAllPosts() {
 			new Date(a.frontmatter.date).getTime()
 	);
 }
+
+type FrontMatter = Awaited<ReturnType<typeof getPostBySlug>>['frontmatter']
+
+export async function getAllTags() {
+	try {
+		const posts = await getAllPosts();
+
+		const tagsMap: Record<
+			string,
+			{ count: number; frontMatter: FrontMatter[] }
+		> = {};
+
+		for (const item of posts) {
+			item.frontmatter.tags.forEach((tag) => {
+				if (!tagsMap[tag]) tagsMap[tag] = { count: 0, frontMatter: [] };
+				tagsMap[tag].count++;
+				tagsMap[tag].frontMatter.push(item.frontmatter);
+			});
+		}
+
+		// if (tags && tags.length) {
+		// 	const reqestTagsMap = tags.reduce<Record<string, boolean>>(
+		// 		(pre, curr) => {
+		// 			pre[curr] = true;
+		// 			return pre;
+		// 		},
+		// 		{}
+		// 	);
+		// 	const outputMap: Record<
+		// 		string,
+		// 		{ count: number; frontMatter: FrontMatter[] }
+		// 	> = {};
+		// 	for (const key of Object.keys(tags)) {
+		// 		if (reqestTagsMap[key]) {
+		// 			outputMap[key] = tagsMap[key];
+		// 		}
+		// 	}
+		// 	return NextResponse.json(outputMap, { status: 200 });
+		// }
+
+		return tagsMap;
+	} catch (error) {
+		console.error(error);
+		return {};
+	}
+}
