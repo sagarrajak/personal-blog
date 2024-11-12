@@ -116,26 +116,6 @@ export async function getAllTags() {
 			});
 		}
 
-		// if (tags && tags.length) {
-		// 	const reqestTagsMap = tags.reduce<Record<string, boolean>>(
-		// 		(pre, curr) => {
-		// 			pre[curr] = true;
-		// 			return pre;
-		// 		},
-		// 		{}
-		// 	);
-		// 	const outputMap: Record<
-		// 		string,
-		// 		{ count: number; frontMatter: FrontMatter[] }
-		// 	> = {};
-		// 	for (const key of Object.keys(tags)) {
-		// 		if (reqestTagsMap[key]) {
-		// 			outputMap[key] = tagsMap[key];
-		// 		}
-		// 	}
-		// 	return NextResponse.json(outputMap, { status: 200 });
-		// }
-
 		return tagsMap;
 	} catch (error) {
 		console.error(error);

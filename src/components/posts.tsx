@@ -11,12 +11,11 @@ function BlogPosts(props: { posts: PostContentType }) {
 	useEffect(() => {
 		const tagParams: string | null = search.get("tags");
 		const tags = !!tagParams ? tagParams.split(",") : [];
-		console.log({ tags });
 		setPosts([
 			...props.posts.filter((item) => {
 				if (!tags || tags.length <= 0) return true;
 				else {
-					for (let singleTag of tags) {
+					for (const singleTag of tags) {
 						if (
 							item.frontmatter.tags.findIndex((tag) => tag === singleTag) >= 0
 						)
