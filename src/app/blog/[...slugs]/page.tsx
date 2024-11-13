@@ -79,6 +79,7 @@ export default async function PostPage({ params }: PostPageParams) {
 			<article
 				className="
 		container
+		px-3
 		py-6
 		prose
 		prose-stone

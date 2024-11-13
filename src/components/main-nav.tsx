@@ -7,10 +7,10 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const routes = [
-	{
-		name: "Recent",
-		path: "recent",
-	},
+	// {
+	// 	name: "Recent",
+	// 	path: "recent",
+	// },
 	{
 		name: "About",
 		path: "about",

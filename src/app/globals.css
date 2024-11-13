@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "animate.css/animate.min.css";
+
 body {
 	font-family: Arial, Helvetica, sans-serif;
 }
@@ -83,4 +85,11 @@ body {
   background-size: 100%;
   background-repeat: repeat;
 	opacity: 1;
+}
+
+
+.bg-about-container {
+		background-image: url("data:image/svg+xml,<svg id='visual' viewBox='0 0 900 600' width='900' height='600' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1'><script xmlns=''/><rect width='900' height='600' fill='%23001829'/><g><g transform='translate(425 579)'><path d='M0 -147L127.3 -73.5L127.3 73.5L0 147L-127.3 73.5L-127.3 -73.5Z' fill='%23297EA6'/></g><g transform='translate(44 50)'><path d='M0 -124L107.4 -62L107.4 62L0 124L-107.4 62L-107.4 -62Z' fill='%23297EA6'/></g><g transform='translate(865 14)'><path d='M0 -76L65.8 -38L65.8 38L0 76L-65.8 38L-65.8 -38Z' fill='%23297EA6'/></g></g></svg>");
+		background-size: 100%;
+		background-position: center;
 }
