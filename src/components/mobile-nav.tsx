@@ -15,7 +15,7 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import { siteConfig } from "../../config/site";
 import { Icons } from "./icon";
-
+import { useRouter } from "next/navigation";
 
 const routes = [
 	{
@@ -37,6 +37,11 @@ const routes = [
 
 function MobileNav() {
 	const [open, setOpen] = useState(false);
+	const router = useRouter();
+
+	const closeDrawer = () => {
+		setOpen(false);
+	};
 
 	return (
 		<Sheet open={open} onOpenChange={setOpen}>
@@ -52,7 +57,11 @@ function MobileNav() {
 				</SheetHeader>
 				<div className="flex flex-col flex-1 justify-start items-center mt-10 my-10 hover:cursor-pointer">
 					{routes.map((route) => (
-						<SheetClose className="w-full border-t border hover:bg-background/20 flex flex-row justify-between py-3 px-2 font-medium">
+						<SheetClose
+							key={route.name}
+							onClick={() => router.push(route.path)}
+							className="w-full border-t border hover:bg-background/20 flex flex-row justify-between py-3 px-2 font-medium"
+						>
 							<Link href={route.path}>{route.name}</Link>
 							{route.icon}
 						</SheetClose>
@@ -64,6 +73,7 @@ function MobileNav() {
 							href={siteConfig.links.github}
 							target="_blank"
 							rel="noreferrer"
+							onClick={closeDrawer}
 						>
 							<div
 								className={cn(
@@ -81,6 +91,7 @@ function MobileNav() {
 							href={siteConfig.links.twitter}
 							target="_blank"
 							rel="noreferrer"
+							onClick={closeDrawer}
 						>
 							<div
 								className={cn(
@@ -98,6 +109,7 @@ function MobileNav() {
 							href={siteConfig.links.linkedin}
 							target="_blank"
 							rel="noreferrer"
+							onClick={closeDrawer}
 						>
 							<div
 								className={cn(

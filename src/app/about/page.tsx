@@ -66,7 +66,7 @@ const ResumeComponent = () => {
 
 	return (
 		<div className="w-full flex-1  bg-about-container">
-			<div className="min-h-screen bg-white/50  dark:bg-gray-900/70 text-gray-900 dark:text-white ">
+			<div className="min-h-screen bg-white/70  dark:bg-gray-900/70 text-gray-900 dark:text-white ">
 				<div className="container mx-auto px-4 py-8">
 					{/* Header Section */}
 					<div className="flex flex-col md:flex-row items-center gap-6 mb-8 animate-[fadeInDown_1s_ease-in-out]">
@@ -76,13 +76,13 @@ const ResumeComponent = () => {
 							className="rounded-full w-32 h-32 object-cover border-4 border-blue-500 dark:border-blue-400 animate-[fadeIn_1.5s_ease-in-out]"
 						/>
 						<div className="text-center md:text-left">
-							<h1 className="text-3xl font-bold mb-2 animate-[fadeInRight_1s_ease-in-out]">
+							<h1 className="text-3xl text-gray-900 dark:text-white  font-bold mb-2 animate-[fadeInRight_1s_ease-in-out]">
 								SAGAR RAJAK
 							</h1>
-							<h2 className="text-xl text-blue-500 dark:text-blue-400 mb-2 animate-[fadeInRight_1.2s_ease-in-out]">
+							<h2 className="text-xl  text-blue-900 dark:text-blue-200 mb-2 animate-[fadeInRight_1.2s_ease-in-out]">
 								Senior Software Engineer
 							</h2>
-							<p className="text-gray-600 dark:text-gray-400 animate-[fadeInRight_1.4s_ease-in-out]">
+							<p className="text-gray-900 dark:text-gray-300 animate-[fadeInRight_1.4s_ease-in-out]">
 								With 5+ years of experience in developing client-server
 								applications.
 							</p>
