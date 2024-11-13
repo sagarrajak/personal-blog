@@ -1,6 +1,6 @@
 ---
-title: Hello word
-description: This is first blog
+title: Getting started with typescript generics
+description: Basic guide of typescript generics
 date: 2024-03-06
 tags: ["react", "js", "nodejs", "typescript", "tailwind"]
 published: true
@@ -309,15 +309,125 @@ function onlyAcceptTrue<T extends true>(value: T) {}
 
 The keyof keyword in TypeScript, when used with generics, is a powerful utility that allows you to create types based on the keys of an object. It is used to get the property names (keys) of a given object type.
 This can be particularly useful when you want to limit the values of a variable to the keys of an object or when you want to extract types dynamically based on the shape of other types.
+### Example: Basic Example
+``` ts baisExample.tsx
+interface User {
+  name: string;
+  age: number;
+  email: string;
+}
+
+// UserKeys will be "name" | "age" | "email"
+type UserKeys = keyof User;
+
+// This function can only accept keys that exist in User
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const user: User = {
+  name: "John",
+  age: 30,
+  email: "john@example.com"
+};
+
+// ✅ Works fine
+const userName = getProperty(user, "name");
+
+// ❌ TypeScript Error: Argument of type '"address"' is not assignable
+// to parameter of type 'keyof User'
+const userAddress = getProperty(user, "address");
+```
 
 ### Example: A form when you want to set the value of the key according to the passed type
 
+``` ts typesafeFormValue.tsx
+
+	interface FormValues {
+		username: string;
+		email: string;
+		age: number;
+	}
+
+	class FormHandler<T> {
+		private values: T;
+
+		constructor(initialValues: T) {
+			this.values = initialValues;
+		}
+
+		setValue<K extends keyof T>(key: K, value: T[K]) {
+			this.values[key] = value;
+		}
+
+		getValue<K extends keyof T>(key: K): T[K] {
+			return this.values[key];
+		}
+	}
+
+	// Usage
+	const form = new FormHandler<FormValues>({
+		username: "",
+		email: "",
+		age: 0
+	});
+
+	form.setValue("username", "john_doe"); // ✅ Type-safe
+	form.setValue("age", 25);             // ✅ Type-safe
+	form.setValue("email", 123);          // ❌ Type error: number is not assignable to string
+```
+
 ## What is 'infer' Keyword
+The infer keyword is used in conditional types to extract type information from other types. It's particularly useful when you want to infer the type of a variable within a generic type.
+
+### Example: Infer Example
+```ts basicExampleInfer.tsx
+// Extract return type of a function
+type ReturnTypeOf<T> = T extends (...args: any[]) => infer R ? R : never;
+
+function getMessage(): string {
+  return "Hello World";
+}
+
+type MessageType = ReturnTypeOf<typeof getMessage>; // string
+
+// Extract array element type
+type ArrayElementType<T> = T extends (infer U)[] ? U : never;
+
+type NumberArray = number[];
+type ElementType = ArrayElementType<NumberArray>; // number
+```
 
 ## Default type parameters
+TypeScript allows you to specify default types for generic type parameters, similar to default function parameters:
 
-## Real word Example's
+### Example: Default value example
+``` ts defaultValue.tsx
+interface ApiResponse<T = any> {
+  data: T;
+  status: number;
+  message: string;
+}
 
-### A Autocomplete that will extreact data from any endpoint's and show as list
+// Using default type parameter
+const response1: ApiResponse = {
+  data: "anything",
+  status: 200,
+  message: "Success"
+};
 
-### Generic redux getter and setter
+// Specifying a type
+interface User {
+  id: number;
+  name: string;
+}
+
+const response2: ApiResponse<User> = {
+  data: { id: 1, name: "John" },
+  status: 200,
+  message: "Success"
+};
+```
+## Conclusion
+
+TypeScript's advanced type system features like keyof and infer, combined with generics and default type parameters, provide powerful tools for building type-safe and reusable components. These features are particularly valuable when building larger applications where type safety and code reusability are crucial.

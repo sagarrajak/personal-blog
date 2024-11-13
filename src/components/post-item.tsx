@@ -10,7 +10,7 @@ export function PostItem({ slug, title, description, date }: PostItemProps) {
 	return <article className="flex flex-col gap-2 border border-border border-b my-3 p-3 rounded-md shadow-sm hover:shadow-md hover:cursor-pointer">
 		<div>
 			<h2 className="text-2xl font-bold">
-				<Link href={slug}>{title}</Link>
+				<Link href={['blog', slug].join("/")}>{title}</Link>
 			</h2>
 		</div>
 		<div className="max-w-none text-muted-foreground">
