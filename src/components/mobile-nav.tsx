@@ -62,7 +62,7 @@ function MobileNav() {
 							onClick={() => router.push(route.path)}
 							className="w-full border-t border hover:bg-background/20 flex flex-row justify-between py-3 px-2 font-medium"
 						>
-							<Link href={route.path}>{route.name}</Link>
+							<div>{route.name}</div>
 							{route.icon}
 						</SheetClose>
 					))}
